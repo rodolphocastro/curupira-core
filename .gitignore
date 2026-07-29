@@ -44,3 +44,5 @@ playwright-report/
 # Pocketbase
 pb_data/
 pocketbase
+pb_public/
+
