@@ -46,3 +46,6 @@ pb_data/
 pocketbase
 pb_public/
 
+# IntelliJ stuff
+.idea/
+
