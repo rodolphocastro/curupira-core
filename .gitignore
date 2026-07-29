@@ -49,3 +49,5 @@ pb_public/
 # IntelliJ stuff
 .idea/
 
+# Claude
+.claude/
