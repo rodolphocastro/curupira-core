@@ -47,21 +47,30 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
+      testIgnore: /boot\.spec\.ts$/,
       use: {
         ...devices['Desktop Chrome'],
       },
     },
     {
       name: 'firefox',
+      testIgnore: /boot\.spec\.ts$/,
       use: {
         ...devices['Desktop Firefox'],
       },
     },
     {
       name: 'webkit',
+      testIgnore: /boot\.spec\.ts$/,
       use: {
         ...devices['Desktop Safari'],
       },
+    },
+    {
+      /* Process-level backend tests (e2e/boot.spec.ts) — no browser involved, so they
+       * run once here instead of redundantly across all three browser projects above. */
+      name: 'backend',
+      testMatch: /boot\.spec\.ts$/,
     },
 
     /* Test against mobile viewports. */
@@ -103,7 +112,7 @@ export default defineConfig({
      * Use the preview server on CI for more realistic testing.
      * Playwright will re-use the local server if there is already a dev-server running.
      */
-    command: process.env.CI ? 'npm run preview' : 'npm run dev',
+    command: process.env.CI ? 'pnpm run preview' : 'pnpm run dev',
     port: process.env.CI ? 4173 : 5173,
     reuseExistingServer: !process.env.CI,
   },
