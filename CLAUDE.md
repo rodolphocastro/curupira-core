@@ -22,6 +22,7 @@ Package manager is **pnpm** — do not use npm/yarn (no lockfiles exist for them
 - Formatting is owned by **oxfmt**, not Prettier: no semicolons, single quotes (`.oxfmtrc.json`). ESLint's Prettier config only disables conflicting style rules — don't hand-format against Prettier defaults.
 - `oxlint` handles most linting (correctness rules across `eslint`/`typescript`/`unicorn`/`oxc`/`vue`/`vitest` plugins); ESLint is layered on top mainly for Vue/TS/Playwright/Vitest-specific rules oxlint doesn't cover.
 - 2-space indent, LF endings, max line length 100 (`.editorconfig`).
+- If left vague always confirms what tests should be created for a feature. Prefer unit tests over e2e tests when suggesting / asking back.
 
 ## PocketBase backend (`backend/`)
 
