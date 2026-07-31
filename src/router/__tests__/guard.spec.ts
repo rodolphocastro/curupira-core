@@ -4,6 +4,7 @@ import { setActivePinia, createPinia } from 'pinia'
 import { createAppRouter } from '../index'
 import { useBootStatusStore } from '@/stores/bootStatus'
 
+/** Builds an isolated router instance (in-memory history) so tests don't share navigation state. */
 function freshRouter() {
   return createAppRouter(createMemoryHistory())
 }

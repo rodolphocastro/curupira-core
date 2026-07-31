@@ -12,6 +12,7 @@ import { pb } from '@/lib/pocketbase'
 
 type SettingsCollection = ReturnType<typeof pb.collection>
 
+/** Builds a fake `settings` RecordService backed only by the `getFirstListItem` behavior under test. */
 function fakeSettingsCollection(
   getFirstListItem: () => Promise<{ firstUserCreated: boolean }>,
 ): SettingsCollection {

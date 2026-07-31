@@ -23,6 +23,7 @@ Package manager is **pnpm** — do not use npm/yarn (no lockfiles exist for them
 - `oxlint` handles most linting (correctness rules across `eslint`/`typescript`/`unicorn`/`oxc`/`vue`/`vitest` plugins); ESLint is layered on top mainly for Vue/TS/Playwright/Vitest-specific rules oxlint doesn't cover.
 - 2-space indent, LF endings, max line length 100 (`.editorconfig`).
 - If left vague always confirms what tests should be created for a feature. Prefer unit tests over e2e tests when suggesting / asking back.
+- Always use JsDoc on public members (classes, functions, interfaces, types)
 
 ## PocketBase backend (`backend/`)
 

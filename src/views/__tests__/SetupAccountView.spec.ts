@@ -23,6 +23,7 @@ vi.mock('@/lib/pocketbase', () => ({
   },
 }))
 
+/** Fills the Create User form (defaulting to valid credentials) and submits it. */
 async function fillAndSubmit(
   wrapper: ReturnType<typeof mount>,
   options: { email?: string; password?: string; passwordConfirm?: string } = {},
