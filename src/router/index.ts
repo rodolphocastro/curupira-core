@@ -1,23 +1,53 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory, type RouterHistory } from 'vue-router'
+import { useBootStatusStore } from '@/stores/bootStatus'
+import AllSetView from '@/views/AllSetView.vue'
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
-    },
-  ],
-})
+/**
+ * Builds the app router with the boot-status guard attached. Takes the history mode as a
+ * parameter (rather than hardcoding `createWebHistory`) so tests can pass `createMemoryHistory`
+ * and get an isolated instance instead of sharing the singleton default-exported below.
+ */
+export function createAppRouter(history: RouterHistory) {
+  const router = createRouter({
+    history,
+    routes: [
+      {
+        path: '/',
+        name: 'all-set',
+        component: AllSetView,
+      },
+      {
+        path: '/welcome',
+        name: 'welcome',
+        component: () => import('@/views/WelcomeView.vue'),
+      },
+      {
+        path: '/setup-account',
+        name: 'setup-account',
+        component: () => import('@/views/SetupAccountView.vue'),
+      },
+    ],
+  })
 
-export default router
+  router.beforeEach(async (to) => {
+    const bootStatus = useBootStatusStore()
+
+    if (bootStatus.firstUserCreated === null) {
+      await bootStatus.refresh()
+    }
+
+    if (bootStatus.firstUserCreated && (to.name === 'welcome' || to.name === 'setup-account')) {
+      return { name: 'all-set' }
+    }
+
+    if (!bootStatus.firstUserCreated && to.name === 'all-set') {
+      return { name: 'welcome' }
+    }
+
+    return true
+  })
+
+  return router
+}
+
+export default createAppRouter(createWebHistory(import.meta.env.BASE_URL))

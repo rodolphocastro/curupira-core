@@ -22,6 +22,8 @@ Package manager is **pnpm** — do not use npm/yarn (no lockfiles exist for them
 - Formatting is owned by **oxfmt**, not Prettier: no semicolons, single quotes (`.oxfmtrc.json`). ESLint's Prettier config only disables conflicting style rules — don't hand-format against Prettier defaults.
 - `oxlint` handles most linting (correctness rules across `eslint`/`typescript`/`unicorn`/`oxc`/`vue`/`vitest` plugins); ESLint is layered on top mainly for Vue/TS/Playwright/Vitest-specific rules oxlint doesn't cover.
 - 2-space indent, LF endings, max line length 100 (`.editorconfig`).
+- If left vague always confirms what tests should be created for a feature. Prefer unit tests over e2e tests when suggesting / asking back.
+- Always use JsDoc on public members (classes, functions, interfaces, types)
 
 ## PocketBase backend (`backend/`)
 
@@ -44,5 +46,6 @@ Package manager is **pnpm** — do not use npm/yarn (no lockfiles exist for them
 
 - Use Conventional Commits.
 - Never add a Co-Authored-By trailer to commits.
+- You may commit automatically as far as you're out of the `master` branch.
 - Always work on a feature branch — never commit directly to `master`.
-- Never open a pull request or issue by yourself, this is always done by the human.
+- Never open a pull request or issue by yourself, only the human may do this.
