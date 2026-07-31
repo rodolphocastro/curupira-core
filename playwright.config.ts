@@ -54,14 +54,14 @@ export default defineConfig({
     },
     {
       name: 'firefox',
-      testIgnore: /boot\.spec\.ts$/,
+      testIgnore: [/boot\.spec\.ts$/, /first-user-creation\.spec\.ts$/],
       use: {
         ...devices['Desktop Firefox'],
       },
     },
     {
       name: 'webkit',
-      testIgnore: /boot\.spec\.ts$/,
+      testIgnore: [/boot\.spec\.ts$/, /first-user-creation\.spec\.ts$/],
       use: {
         ...devices['Desktop Safari'],
       },
