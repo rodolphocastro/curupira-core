@@ -2,7 +2,7 @@
 
 Date: 2026-07-29
 
-Status: Accepted
+Status: Accepted (Component behavior bullet superseded by [ADR-003](003-reka-ui-over-radix-vue.md))
 
 ## Context
 
@@ -23,8 +23,9 @@ from [ADR-001](001-adopt-pocketbase.md).
   Dark mode is deferred, not ruled out.
 - **Styling**: Tailwind CSS for all layout, spacing, and color utility classes. No pre-styled component library
   (e.g. Vuetify, PrimeVue).
-- **Component behavior**: Radix Vue for headless, accessible primitives (dialogs, menus, dropdowns, etc.),
-  behavior and accessibility only, styled entirely with our own Tailwind classes.
+- **Component behavior**: ~~Radix Vue~~ [Reka UI](003-reka-ui-over-radix-vue.md) (Radix Vue's
+  successor) for headless, accessible primitives (dialogs, menus, dropdowns, etc.), behavior and
+  accessibility only, styled entirely with our own Tailwind classes.
 - **Spacing**: Tailwind's default spacing scale (4px base unit), not a custom one.
 - **Icons**: Radix Icons, for visual consistency with the Radix Vue primitives.
 - **Accessibility baseline**: WCAG AA contrast (4.5:1 for body text) is a hard constraint on any palette or theme
