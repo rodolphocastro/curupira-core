@@ -15,6 +15,16 @@ It should ensure that:
 - By the time it finishes, at least one user exists within the database
 - It sets up the stage so "default" settings may be created by someone at a later point
 
+### Gating mechanism
+
+The frontend can't query the `users` collection to check "are there no other Users" before anyone
+is logged in, since listing/viewing `users` isn't publicly readable. Instead, the flow is gated on
+a `settings` collection: a single record with a `firstUserCreated` boolean field, readable by
+anyone (so the gate can be checked pre-login) but only creatable/updatable/deletable by an
+authenticated user. The First User writes `firstUserCreated: true` to it themselves, right after
+their account is created and they're auto-logged-in — which is also the seed record for
+["default" settings](set-up-defaults.md) mentioned above.
+
 There won't be any type of RBAC on Curupira, we expect the First User to be a regular user. It just so happens to be
 the first one and the one able to (later) set up the defaults for the whole instance.
 
@@ -33,6 +43,7 @@ Feature: First User Creation
   Background:
     Given the system has booted successfully
     And there are no other Users in the database
+    And the "settings" collection has no record with "firstUserCreated" set to true
 
   Scenario: First user navigates to Curupira
     When the First User opens Curupira on a browser
@@ -60,6 +71,7 @@ Feature: First User Creation
     Then the First User should be stored on the database
     And the First User should not be a PocketBase "superuser"
     And the First User should be logged in automatically
+    And a "settings" record should be created with "firstUserCreated" set to true
 
   Scenario: First user submits their own Account with invalid credentials
     Given the First User is on the Set-Up Account Page
