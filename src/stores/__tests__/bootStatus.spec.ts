@@ -14,7 +14,7 @@ type SettingsCollection = ReturnType<typeof pb.collection>
 
 /** Builds a fake `settings` RecordService backed only by the `getFirstListItem` behavior under test. */
 function fakeSettingsCollection(
-  getFirstListItem: () => Promise<{ firstUserCreated: boolean }>,
+  getFirstListItem: () => Promise<{ firstUserCreated: boolean; readyToWork: boolean }>,
 ): SettingsCollection {
   return { getFirstListItem } as unknown as SettingsCollection
 }
@@ -25,9 +25,9 @@ describe('bootStatus store', () => {
     vi.mocked(pb.collection).mockReset()
   })
 
-  it('resolves true when a settings record exists', async () => {
+  it('resolves both flags true when the settings record has them set', async () => {
     vi.mocked(pb.collection).mockReturnValue(
-      fakeSettingsCollection(() => Promise.resolve({ firstUserCreated: true })),
+      fakeSettingsCollection(() => Promise.resolve({ firstUserCreated: true, readyToWork: true })),
     )
 
     const store = useBootStatusStore()
@@ -35,9 +35,22 @@ describe('bootStatus store', () => {
 
     expect(result).toBe(true)
     expect(store.firstUserCreated).toBe(true)
+    expect(store.readyToWork).toBe(true)
   })
 
-  it('resolves false when no settings record exists', async () => {
+  it('resolves readyToWork false when the settings record has it unset', async () => {
+    vi.mocked(pb.collection).mockReturnValue(
+      fakeSettingsCollection(() => Promise.resolve({ firstUserCreated: true, readyToWork: false })),
+    )
+
+    const store = useBootStatusStore()
+    await store.refresh()
+
+    expect(store.firstUserCreated).toBe(true)
+    expect(store.readyToWork).toBe(false)
+  })
+
+  it('resolves both flags false when no settings record exists', async () => {
     vi.mocked(pb.collection).mockReturnValue(
       fakeSettingsCollection(() => Promise.reject(new Error('404'))),
     )
@@ -47,6 +60,7 @@ describe('bootStatus store', () => {
 
     expect(result).toBe(false)
     expect(store.firstUserCreated).toBe(false)
+    expect(store.readyToWork).toBe(false)
   })
 
   it('markFirstUserCreated sets state to true without querying PocketBase', () => {
@@ -54,6 +68,14 @@ describe('bootStatus store', () => {
     store.markFirstUserCreated()
 
     expect(store.firstUserCreated).toBe(true)
+    expect(pb.collection).not.toHaveBeenCalled()
+  })
+
+  it('markReadyToWork sets state to true without querying PocketBase', () => {
+    const store = useBootStatusStore()
+    store.markReadyToWork()
+
+    expect(store.readyToWork).toBe(true)
     expect(pb.collection).not.toHaveBeenCalled()
   })
 })
