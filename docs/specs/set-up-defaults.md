@@ -93,6 +93,8 @@ Feature: Setting up defaults
   - Probably at the collection level we make everything have a default value or be nullable
 - ~~Where should the First User land after successfully saving the Set-Up Defaults?~~
   - Home page, which will have its own spec later
-- What makes `instanceName` invalid beyond being blank — any length/format rules?
+- ~~What makes `instanceName` invalid beyond being blank — any length/format rules?~~
+  - Non-blank, and limited to `[a-zA-Z0-9._-]` (letters, numbers, `-`, `_`, `.`) — enforced both
+    client-side and via the `settings` collection's `instanceName` field pattern.
 
 ---
