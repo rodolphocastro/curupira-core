@@ -22,7 +22,7 @@ is logged in, since listing/viewing `users` isn't publicly readable. Instead, th
 a `settings` collection: a single record with a `firstUserCreated` boolean field, readable by
 anyone (so the gate can be checked pre-login) but only creatable/updatable/deletable by an
 authenticated user. The First User writes `firstUserCreated: true` to it themselves, right after
-their account is created and they're auto-logged-in — which is also the seed record for
+their account is created, and they're auto-logged-in — which is also the seed record for
 ["default" settings](set-up-defaults.md) mentioned above.
 
 There won't be any type of RBAC on Curupira, we expect the First User to be a regular user. It just so happens to be
@@ -92,7 +92,7 @@ Feature: First User Creation
 
 ## Open Questions
 
-- Is there a chance of user creation failing?
+- ~~Is there a chance of user creation failing?~~
   - ~~If that happens how do we recover? Probably worth is own scenario~~
   - If it fails we just trigger this flow again
 
