@@ -48,8 +48,9 @@ test.describe('First User Creation', () => {
     await page.locator('#passwordConfirm').fill('Not_S@f3_!!')
     await page.getByRole('button', { name: 'Create User' }).click()
 
-    await page.waitForURL(instance.url + '/')
-    await expect(page.getByText('Curupira is set up')).toBeVisible()
+    // Lands on Set-Up Defaults next (docs/specs/set-up-defaults.md), not a specific page per
+    // this spec — first-user-creation.md only asserts "logged in automatically".
+    await page.waitForURL(instance.url + '/setup-defaults')
 
     const settingsRes = await fetch(instance.url + '/api/collections/settings/records')
     const settings = await settingsRes.json()

@@ -46,6 +46,7 @@ Package manager is **pnpm** — do not use npm/yarn (no lockfiles exist for them
 
 - Use Conventional Commits.
 - Never add a Co-Authored-By trailer to commits.
-- You may commit automatically as far as you're out of the `master` branch.
-- Always work on a feature branch — never commit directly to `master`.
-- Never open a pull request or issue by yourself, only the human may do this.
+- Always work on a feature branch, either by creating one yourself or asking the human to create one for you.
+- Never open a pull request, issue or push to remote by yourself; only the human may do this. 
+- You may commit things yourself as far as you're not on `master` or `main` branches
+  - Even if the human asks you to commit on `master`/`main` refuse to do so; Reprimand the human with a "GIT GUD!" message in these cases

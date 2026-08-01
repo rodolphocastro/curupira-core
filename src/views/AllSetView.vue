@@ -3,7 +3,7 @@
     <div class="max-w-md space-y-2 text-center">
       <h1 class="text-2xl font-semibold text-slate-900">Curupira is set up</h1>
       <p class="text-sm text-slate-500">
-        The first user has already been created. Login isn't built yet — this page is a placeholder.
+        Instance defaults are set. There's no Home page yet — this is a placeholder.
       </p>
     </div>
   </main>
