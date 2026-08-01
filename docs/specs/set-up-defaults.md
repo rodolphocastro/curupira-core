@@ -1,6 +1,6 @@
 # Spec: Set-up Defaults
 
-Status: Draft
+Status: Accepted
 
 ## Purpose
 
@@ -85,6 +85,7 @@ Feature: Setting up defaults
 
 - Inviting new users
 - Setting up the first entities in the system
+- Login page and Sign-Up flows (they have their own specs)
 
 ## Open Questions
 
