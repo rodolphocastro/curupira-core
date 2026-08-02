@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Curupira Core is a solo-developer, "poor man's Backstage" IDP. Frontend is Vue 3 + Vite + TypeScript at the repo root; PocketBase is the backing service (auth, database, file storage, and static-file serving for the built frontend) under `backend/`. See `docs/decisions/001-adopt-pocketbase.md` for the full rationale. `src/` now has real structure: `lib/pocketbase.ts` (PB client singleton), `stores/` (Pinia), `router/` (with auth guards), and `views/` — each with colocated `__tests__/`. Styling/component conventions (Tailwind, Reka UI) are documented in `docs/decisions/002-design-standards.md` and `003-reka-ui-over-radix-vue.md` — check `docs/decisions/` before inventing new architecture.
+Curupira Core is a solo-developer, "poor man's Backstage" IDP. Frontend is Vue 3 + Vite + TypeScript at the repo root; PocketBase is the backing service (auth, database, file storage, and static-file serving for the built frontend) under `backend/`. See `docs/decisions/001-adopt-pocketbase.md` for the full rationale. `src/` now has real structure: `lib/pocketbase.ts` (PB client singleton), `stores/` (Pinia), `router/` (with auth guards), and `views/` — each with colocated `__tests__/`. Playwright e2e specs live in `e2e/` (with `fixtures/`, `helpers/`, and their own `tsconfig.json`) — not colocated with `src/`. Styling/component conventions (Tailwind, Reka UI) are documented in `docs/decisions/002-design-standards.md` and `003-reka-ui-over-radix-vue.md` — check `docs/decisions/` before inventing new architecture.
 
 ## Commands
 
@@ -17,6 +17,8 @@ Package manager is **pnpm** — do not use npm/yarn (no lockfiles exist for them
 - `pnpm lint` — runs `oxlint --fix` then `eslint --fix --cache`
 - `pnpm format` — `oxfmt src/`
 
+See `CONTRIBUTING.md` for full local-setup steps and the required PocketBase version (v0.23.0+ — migrations use the fields API introduced then).
+
 ## Code style
 
 - Formatting is owned by **oxfmt**, not Prettier: no semicolons, single quotes (`.oxfmtrc.json`). ESLint's Prettier config only disables conflicting style rules — don't hand-format against Prettier defaults.
@@ -24,14 +26,18 @@ Package manager is **pnpm** — do not use npm/yarn (no lockfiles exist for them
 - 2-space indent, LF endings, max line length 100 (`.editorconfig`).
 - If left vague always confirms what tests should be created for a feature. Prefer unit tests over e2e tests when suggesting / asking back.
 - Always use JsDoc on public members (classes, functions, interfaces, types)
+- Prefer naming things in English over other languages, so more contributors can follow along.
+- Boy Scout Rule: fixing an unrelated code smell, bug, or security issue while touching a file is welcome and doesn't need its own issue.
+- Before considering a change done, run `pnpm lint`, `pnpm run type-check`, and `pnpm test:unit` locally — there's no CI to catch failures (ADR-001).
 
 ## PocketBase backend (`backend/`)
 
 - The `pocketbase` binary is **never committed** (gitignored) and there's no fetch script yet — it must be placed manually at `backend/pocketbase` (download from pocketbase.io). Don't assume it's present.
 - `backend/pb_public/` (build output) and `backend/pb_data/` are also gitignored and may contain stale artifacts from a previous build — don't treat their presence as evidence of a working build.
 - Hooks go in `backend/pb_hooks/`, migrations in `backend/pb_migrations/`.
+- `backend/pb_migrations/` is no longer empty — it has real migrations (settings collection, instance defaults) tied to the `set-up-defaults` and `system-boot` specs; read the relevant spec before adding to them.
 - No CI/CD exists yet to fetch/pin the binary or deploy — this is a known open gap (ADR-001), not an oversight to silently fix.
-- No env var scheme is defined yet for the frontend to reach PocketBase (no `.env.example`). Flag this rather than inventing a convention.
+- No env var scheme is defined yet for the frontend to reach PocketBase (no `.env.example`). Flag this rather than inventing a convention. In dev, `vite.config.ts` hardcodes a proxy from `/api` to `http://127.0.0.1:8090` instead.
 
 ## `docs/` practices
 
@@ -42,6 +48,10 @@ Package manager is **pnpm** — do not use npm/yarn (no lockfiles exist for them
 - Use `docs/decisions/000-template.md` and `docs/specs/template.md` as the starting point.
 - A Spec's "Open Questions" section means stop and ask — don't assume an answer.
 - `docs/specs/` currently has accepted specs (such `system-boot`, `first-user-creation`, `set-up-defaults`, `login`) — read the relevant one before touching that flow; they document intended behavior, not just a changelog.
+
+## Skills
+
+Skills live in `.claude/skills/` and `.agents/skills/`, both gitignored — they're restored from `skills-lock.json` via `skills.sh`, not committed directly. Don't assume they're present in a fresh checkout, and don't hand-edit the lockfile.
 
 ## Git / commit conventions
 
