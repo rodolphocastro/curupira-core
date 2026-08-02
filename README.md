@@ -1,73 +1,58 @@
-# .
+# Curupira Core
 
-This template should help get you started developing with Vue 3 in Vite.
+Curupira aims to be the "poor man's Backstage.io" – an IDP (internal developer portal) for your organization that's
+straightforward to start and maintain.
 
-## Recommended IDE Setup
+If Backstage.io feels like too much for your organization, Curupira might be a good alternative! Especially compared to
+rolling your own "IDP with Excel / Google Sheets" (been there, done that).
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Why "Curupira"?
 
-## Recommended Browser Setup
+Curupira comes from [Brazilian folklore](https://en.wikipedia.org/wiki/Curupira).
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+While the original Curupira is the guardian to the forest, this Curupira is the guardin to your tech stack!
 
-## Type Support for `.vue` Imports in TS
+> Honestly? I just wanted to find a cool folklore-based name for a project to honor my home country's culture!
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Main Features
 
-## Customize configuration
+### Single box setup
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+Getting Curupira up and running is as simple as doing `docker start` and following the instructions on the Webpage.
 
-## Project Setup
+Maintenance overhead is kept minimal by using PocketBase as Database, Auth Provider and File Storage.
 
-```sh
-pnpm install
-```
+After booting your instance for the first time, you may opt for users to sign up by themselves or being invited in by
+other users.
 
-### Compile and Hot-Reload for Development
+### Make it your own!
 
-```sh
-pnpm dev
-```
+> WIP: Naming, conventions, branding, et cetera!
 
-### Type-Check, Compile and Minify for Production
+### Team (and Topologies)
 
-```sh
-pnpm build
-```
+> WIP: Placeholder
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+### Tools Catalog
 
-```sh
-pnpm test:unit
-```
+> WIP: Placeholder
 
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
+### Service Catalog
 
-```sh
-# Install browsers for the first run
-npx playwright install
+> WIP: Placeholder
 
-# When testing on CI, must build the project first
-pnpm build
+## Running Curupira
 
-# Runs the end-to-end tests
-pnpm test:e2e
-# Runs the tests only on Chromium
-pnpm test:e2e --project=chromium
-# Runs the tests of a specific file
-pnpm test:e2e tests/example.spec.ts
-# Runs the tests in debug mode
-pnpm test:e2e --debug
-```
+> Work in progress! Check back later!
 
-### Lint with [ESLint](https://eslint.org/)
+## Onboarding to Curupira
 
-```sh
-pnpm lint
-```
+> **Important**: while I personally support AI-Assisted development, I do not endorse contributions that are purely made
+by AI. As a contributor, no matter who you are, you are expected to _always_ understand what you are doing and why you 
+(or your 'agent') did it in a certain way.
+
+So you'd like to contribute to Curupira? Awesome! Here's how you can get started:
+
+- Check [CONTRIBUTING.md](./CONTRIBUTING.md) for community guidelines as well as how to set up your development environment.
+- Check the [ADRs](./docs/decisions) for more information on the project's architecture and design decisions.
+- Check the [Specs](./docs/specs) for more information on the project's specifications and requirements.

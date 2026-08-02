@@ -48,6 +48,10 @@ pb_public/
 
 # IntelliJ stuff
 .idea/
+.mcp.json
 
 # Claude
 .claude/
+
+# Skills.sh files - should be restored based on skills-lock.json
+.agents/skills
