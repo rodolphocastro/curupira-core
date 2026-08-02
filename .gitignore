@@ -51,3 +51,6 @@ pb_public/
 
 # Claude
 .claude/
+
+# Skills.sh files - should be restored based on skills-lock.json
+.agents/skills
