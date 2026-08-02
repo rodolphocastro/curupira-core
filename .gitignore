@@ -48,6 +48,7 @@ pb_public/
 
 # IntelliJ stuff
 .idea/
+.mcp.json
 
 # Claude
 .claude/
