@@ -14,6 +14,13 @@ Files within those directories should use `kebab-case` for their names.
 3. New architecturally relevant decisions should be documented in a new ADR
 4. Specs describe current intent and are not meant to be a historical log such as ADRs
 
+## Specs and Modules
+
+Within [specs](./specs) there may be subdirectories. Each subdirectory is meant to be a "module" that groups together
+specs that are relatives.
+
+For instance, the [bootstrap](./specs/bootstrap) module groups together the "first boot" behavior of the system.
+
 ### What is Architecturally relevant?
 
 In short, any decision that might be expensive to change later on or what might be hard to remember "why" is worth an ADR.
