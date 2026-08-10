@@ -32,7 +32,7 @@ the first one and the one able to (later) set up the defaults for the whole inst
 
 This spec assumes that [the system has booted successfully](system-boot.md).
 
-Assume that the Version is the same one as what's stated on [package.json](../../package.json).
+Assume that the Version is the same one as what's stated on [package.json](../../../package.json).
 
 The portal being served means that PocketBase was able to apply migrations and, thus, is healthy - it can be assumed
 as "healthy" for now.
