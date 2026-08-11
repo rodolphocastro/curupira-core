@@ -3,8 +3,8 @@
 // PocketBase's own migration-failure logging (docs/specs/system-boot.md).
 // Never copied into backend/pb_migrations.
 migrate(
-  (app) => {
+  (_app) => {
     throw new Error('simulated invalid collection data')
   },
-  (app) => {},
+  (_app) => {},
 )

@@ -10,14 +10,15 @@ Curupira Core is a solo-developer, "poor man's Backstage" IDP. Frontend is Vue 3
 
 Package manager is **pnpm** — do not use npm/yarn (no lockfiles exist for them).
 
+- `pnpm run install:pocketbase` — fetches the pinned `pocketbase` binary into `backend/pocketbase` (see `scripts/install-pocketbase.js`); no-op if already present
 - `pnpm dev` — runs Vite dev server **and** `backend/pocketbase serve` concurrently (via `concurrently`); requires the `pocketbase` binary to be present at `backend/pocketbase`
 - `pnpm build` — type-checks (`vue-tsc --build`) then builds; output goes to `backend/pb_public/` (PocketBase serves it from there)
-- `pnpm test:unit` — Vitest
-- `pnpm test:e2e` — Playwright (run `npx playwright install` once beforehand; build first if testing the production build)
-- `pnpm lint` — runs `oxlint --fix` then `eslint --fix --cache`
-- `pnpm format` — `oxfmt src/`
+- `pnpm test:unit` — Vitest, runs once with coverage by default; `pnpm test:unit:watch` for interactive watch mode without coverage
+- `pnpm test:e2e` — Playwright, `chromium` only (run `npx playwright install chromium` once beforehand; build first if testing the production build)
+- `pnpm lint` — runs `oxlint --fix` then `eslint --fix --cache`; `pnpm lint:check` for a non-mutating version (what CI runs)
+- `pnpm format` — `oxfmt src/`; `pnpm format:check` for a non-mutating version (what CI runs)
 
-See `CONTRIBUTING.md` for full local-setup steps and the required PocketBase version (v0.23.0+ — migrations use the fields API introduced then).
+See `CONTRIBUTING.md` for full local-setup steps and `docs/decisions/004-continuous-integration.md` for the pinned PocketBase version and CI pipeline.
 
 ## Code style
 
@@ -28,15 +29,15 @@ See `CONTRIBUTING.md` for full local-setup steps and the required PocketBase ver
 - Always use JsDoc on public members (classes, functions, interfaces, types)
 - Prefer naming things in English over other languages, so more contributors can follow along.
 - Boy Scout Rule: fixing an unrelated code smell, bug, or security issue while touching a file is welcome and doesn't need its own issue.
-- Before considering a change done, run `pnpm lint`, `pnpm run type-check`, and `pnpm test:unit` locally — there's no CI to catch failures (ADR-001).
+- Before considering a change done, run `pnpm lint`, `pnpm run type-check`, and `pnpm test:unit` locally — CI (ADR-004) re-checks these on every PR, but don't rely on it to catch what you can catch first.
 
 ## PocketBase backend (`backend/`)
 
-- The `pocketbase` binary is **never committed** (gitignored) and there's no fetch script yet — it must be placed manually at `backend/pocketbase` (download from pocketbase.io). Don't assume it's present.
+- The `pocketbase` binary is **never committed** (gitignored). Run `pnpm run install:pocketbase` to fetch the pinned version (see ADR-004) into `backend/pocketbase` — don't assume it's present without checking.
 - `backend/pb_public/` (build output) and `backend/pb_data/` are also gitignored and may contain stale artifacts from a previous build — don't treat their presence as evidence of a working build.
 - Hooks go in `backend/pb_hooks/`, migrations in `backend/pb_migrations/`.
 - `backend/pb_migrations/` is no longer empty — it has real migrations (settings collection, instance defaults) tied to the `set-up-defaults` and `system-boot` specs; read the relevant spec before adding to them.
-- No CI/CD exists yet to fetch/pin the binary or deploy — this is a known open gap (ADR-001), not an oversight to silently fix.
+- CI now exists (`docs/decisions/004-continuous-integration.md`, `.github/workflows/`) and fetches/pins the binary itself. Actual deployment is still an open gap (ADR-001), not an oversight to silently fix.
 - No env var scheme is defined yet for the frontend to reach PocketBase (no `.env.example`). Flag this rather than inventing a convention. In dev, `vite.config.ts` hardcodes a proxy from `/api` to `http://127.0.0.1:8090` instead.
 
 ## `docs/` practices

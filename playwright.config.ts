@@ -43,7 +43,7 @@ export default defineConfig({
     headless: !!process.env.CI,
   },
 
-  /* Configure projects for major browsers */
+  /* Only chromium is supported — see docs/decisions/004-continuous-integration.md. */
   projects: [
     {
       name: 'chromium',
@@ -53,61 +53,11 @@ export default defineConfig({
       },
     },
     {
-      name: 'firefox',
-      testIgnore: [
-        /boot\.spec\.ts$/,
-        /first-user-creation\.spec\.ts$/,
-        /set-up-defaults\.spec\.ts$/,
-      ],
-      use: {
-        ...devices['Desktop Firefox'],
-      },
-    },
-    {
-      name: 'webkit',
-      testIgnore: [
-        /boot\.spec\.ts$/,
-        /first-user-creation\.spec\.ts$/,
-        /set-up-defaults\.spec\.ts$/,
-      ],
-      use: {
-        ...devices['Desktop Safari'],
-      },
-    },
-    {
       /* Process-level backend tests (e2e/boot.spec.ts) — no browser involved, so they
-       * run once here instead of redundantly across all three browser projects above. */
+       * run once here instead of redundantly under the chromium project above. */
       name: 'backend',
       testMatch: /boot\.spec\.ts$/,
     },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: {
-    //     ...devices['Pixel 5'],
-    //   },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: {
-    //     ...devices['iPhone 12'],
-    //   },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: {
-    //     channel: 'msedge',
-    //   },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: {
-    //     channel: 'chrome',
-    //   },
-    // },
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */

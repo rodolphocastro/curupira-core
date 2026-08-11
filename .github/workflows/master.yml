@@ -1,0 +1,57 @@
+name: Master Commit
+
+# Backs docs/decisions/004-continuous-integration.md.
+# Same as pr.yml, minus format/lint checks — those only run on PRs (see the ADR's table).
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Restore Node dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Version is baked into the cache key: bump it here if
+      # scripts/install-pocketbase.js's POCKETBASE_VERSION changes.
+      - name: Restore PocketBase
+        uses: actions/cache@v6
+        with:
+          path: backend/pocketbase
+          key: pocketbase-${{ runner.os }}-0.39.9
+
+      - name: Install PocketBase
+        run: pnpm run install:pocketbase
+
+      - name: Restore Playwright browsers
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Unit tests
+        run: |
+          echo '## Unit test coverage' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          pnpm run test:unit | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: E2E tests
+        run: pnpm run test:e2e
