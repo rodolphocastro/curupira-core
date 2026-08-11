@@ -1,1 +1,14 @@
-* text=auto eol=lf
+# Default
+* text=auto
+
+# Markdown
+*.md text eol=lf
+
+# Code
+*.js text eol=lf
+*.ts text eol=lf
+*.html text eol=lf
+*.vue text eol=lf
+*.css text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf

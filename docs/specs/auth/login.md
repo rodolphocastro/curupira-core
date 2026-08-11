@@ -5,14 +5,14 @@ Status: Accepted
 ## Purpose
 
 Login lets an existing user authenticate into Curupira with their PocketBase credentials. It's
-the gateway every other flow redirects to once [the first user exists](first-user-creation.md)
+the gateway every other flow redirects to once [the first user exists](../bootstrap/first-user-creation.md)
 but the current visitor has no active session — including gating access while
-[instance defaults aren't set up yet](set-up-defaults.md).
+[instance defaults aren't set up yet](../bootstrap/set-up-defaults.md).
 
 ## Behavior
 
-This spec assumes [the system has booted successfully](system-boot.md) and that
-[the first user has already been created](first-user-creation.md).
+This spec assumes [the system has booted successfully](../bootstrap/system-boot.md) and that
+[the first user has already been created](../bootstrap/first-user-creation.md).
 
 ```gherkin
 Feature: Login
@@ -64,14 +64,14 @@ Feature: Login
 - Any rate-limiting or lockout beyond whatever PocketBase already does by default.
 - Logout (belongs with whichever page ends up being the authenticated Home).
 - Where exactly an authenticated, "ready" user lands (the Home Page) — that's its own
-  not-yet-written spec, same forward reference [Set-up Defaults](set-up-defaults.md) already makes.
+  not-yet-written spec, same forward reference [Set-up Defaults](../bootstrap/set-up-defaults.md) already makes.
 
 ## Open Questions
 
 - ~~Does the combined `firstUserCreated` × `readyToWork` × auth-state routing matrix warrant its
   own ADR?~~
   - No — it's a straightforward extension of the existing Vue Router + Pinia guard pattern from
-    [First User Creation](first-user-creation.md); the state matrix is documented in the specs
+    [First User Creation](../bootstrap/first-user-creation.md); the state matrix is documented in the specs
     themselves, not a separate ADR.
 
 ---

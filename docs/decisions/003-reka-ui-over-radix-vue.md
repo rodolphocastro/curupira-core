@@ -11,7 +11,7 @@ Status: Accepted
 library to pair with Tailwind CSS for the Welcome, Set-Up Account, and Login pages. Radix Vue has
 since been renamed/forked to **Reka UI** by its maintainer, with Radix Vue itself no longer
 maintained under that name. This surfaced while implementing the first real UI work
-([First User Creation](../specs/first-user-creation.md)), which is when the design stack from
+([First User Creation](../specs/bootstrap/first-user-creation.md)), which is when the design stack from
 ADR-002 was first actually installed.
 
 ## Decision
