@@ -15,9 +15,11 @@ to be able to explain it if asked.
 - **Node.js**: `^22.18.0` or `>=24.12.0` (see `engines` in `package.json`)
 - **pnpm**: is the only supported package manager — do not use npm or yarn, no lockfiles exist for
   them. If you don't have it, [install it](https://pnpm.io/installation)
-- **PocketBase**: v0.23.0 or later. The project's migrations use the fields API
-  (`TextField`/`BoolField`, `collection.fields.add`) introduced in that version, older binaries
-  will fail to apply them.
+- **PocketBase**: fetched automatically for you (see step 2 below) — no manual download needed.
+- **`unzip`**: needed by the PocketBase install script. Present by default on macOS, Linux, and
+  WSL2.
+- **Unix environment**: PocketBase installation only supports macOS/Linux. On Windows, use WSL2
+  to contribute (see [ADR-004](docs/decisions/004-continuous-integration.md)).
 
 ## Local setup
 
@@ -27,12 +29,15 @@ to be able to explain it if asked.
    pnpm install
    ```
 
-2. Download a `pocketbase` binary for your platform from
-   [pocketbase.io/docs](https://pocketbase.io/docs) and place it at `backend/pocketbase` (see
-   `backend/README.md`). It must be named exactly `pocketbase` and be executable
-   (`chmod +x backend/pocketbase` on macOS/Linux). This binary is gitignored and never committed, 
-   there's no fetch script yet (a known gap, see
-   [ADR-001](docs/decisions/001-adopt-pocketbase.md)), so this step is manual for now.
+2. Fetch the pinned `pocketbase` binary into `backend/pocketbase`:
+
+   ```bash
+   pnpm run install:pocketbase
+   ```
+
+   This binary is gitignored and never committed — the script (`scripts/install-pocketbase.js`)
+   downloads the version pinned in [ADR-004](docs/decisions/004-continuous-integration.md) and is
+   safe to re-run (it's a no-op if `backend/pocketbase` already exists).
 
 3. Start the app — this runs the Vite dev server and `pocketbase serve` together:
 
@@ -48,20 +53,23 @@ to be able to explain it if asked.
 
 ## Running tests
 
-- Unit tests (Vitest):
+- Unit tests (Vitest) — runs once and reports coverage by default:
 
   ```bash
   pnpm test:unit
   ```
 
-- End-to-end tests (Playwright) — install browsers once beforehand:
+  For interactive watch mode (no coverage) while developing, use `pnpm test:unit:watch` instead.
+
+- End-to-end tests (Playwright) — only `chromium` is supported (see
+  [ADR-004](docs/decisions/004-continuous-integration.md)). Install it once beforehand:
 
   ```bash
-  npx playwright install
+  npx playwright install chromium
   ```
 
-  Some OSes also need system dependencies for the browsers to launch
-  (`npx playwright install-deps`, may require `sudo`). Then:
+  Some OSes also need system dependencies for the browser to launch
+  (`npx playwright install-deps chromium`, may require `sudo`). Then:
 
   ```bash
   pnpm test:e2e
@@ -75,15 +83,18 @@ to be able to explain it if asked.
 
 ## Code style
 
-- Formatting is owned by **oxfmt**, not Prettier: no semicolons, single quotes. Run `pnpm format`.
-- Linting: `pnpm lint` (runs `oxlint --fix` then `eslint --fix --cache`).
+- Formatting is owned by **oxfmt**, not Prettier: no semicolons, single quotes. Run `pnpm format`
+  to fix in place, or `pnpm format:check` for a non-mutating check (what CI runs).
+- Linting: `pnpm lint` (runs `oxlint --fix` then `eslint --fix --cache`) to fix in place, or
+  `pnpm lint:check` for a non-mutating check (what CI runs).
 - 2-space indent, LF line endings, max line length 100 (see `.editorconfig`).
 - Public members (classes, functions, interfaces, types) should have JsDoc comments.
 - Prefer unit tests over e2e tests where a unit test can cover the same behavior.
 - Whenever possible, prefer naming things in English to ensure more people may understand it and contribute to the project.
 
-Run `pnpm lint`, `pnpm run type-check`, and `pnpm test:unit` locally before opening a PR, there's
-no CI yet to catch this for you (another known gap, see [ADR-001](docs/decisions/001-adopt-pocketbase.md)).
+Run `pnpm lint`, `pnpm run type-check`, and `pnpm test:unit` locally before opening a PR. CI (see
+[ADR-004](docs/decisions/004-continuous-integration.md)) runs the equivalent checks on every PR,
+but catching issues locally first means a faster feedback loop.
 
 ### Boy Scout Rule
 
@@ -111,7 +122,7 @@ but it helps! No need to create an issue when you do that as part of your contri
 
 ## Submitting changes
 
-Curupira currently has no CI and one maintainer. Open a pull request against `master`; it'll be
+Curupira currently has one maintainer. Open a pull request against `master`; it'll be
 reviewed personally. Please make sure `pnpm lint`, `pnpm run type-check`, and `pnpm test:unit`
 pass locally first.
 
