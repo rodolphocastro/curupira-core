@@ -20,7 +20,9 @@
     "lint": "run-s \"lint:*\"",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
-    "format": "oxfmt src/"
+    "lint:check": "oxlint . && eslint .",
+    "format": "oxfmt src/",
+    "format:check": "oxfmt --check src/"
   },
   "dependencies": {
     "pinia": "^4.0.2",
