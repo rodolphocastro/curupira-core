@@ -1,0 +1,62 @@
+name: PR
+
+# Backs docs/decisions/004-continuous-integration.md.
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Restore Node dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Version is baked into the cache key: bump it here if
+      # scripts/install-pocketbase.js's POCKETBASE_VERSION changes.
+      - name: Restore PocketBase
+        uses: actions/cache@v4
+        with:
+          path: backend/pocketbase
+          key: pocketbase-${{ runner.os }}-0.39.9
+
+      - name: Install PocketBase
+        run: pnpm run install:pocketbase
+
+      - name: Restore Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Format check
+        run: pnpm run format:check
+
+      - name: Lint check
+        run: pnpm run lint:check
+
+      - name: Unit tests
+        run: |
+          echo '## Unit test coverage' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          pnpm run test:unit | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: E2E tests
+        run: pnpm run test:e2e
